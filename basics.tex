@@ -1,0 +1,578 @@
+\documentclass[11pt, aspectratio=169, table]{beamer}
+  % papersize={16cm,9cm},
+
+\mode<presentation>{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% load packages
+% add packages if needed
+
+%\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+\usepackage[english]{babel}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{color}
+\usepackage[tracking=smallcaps, letterspace=-55]{microtype} % package for font spacing
+\usepackage[outline]{contour}
+%\usepackage[perpage]{footmisc}
+\usepackage{transparent} % for setting opacity of pictures
+\usepackage{pifont} % for checkmark (\ding{51}) and cross (\ding{55})
+\usepackage{booktabs,array} % for tables
+\usepackage{graphicx} % for figures
+\usepackage{tikz}
+\usepackage{pgfpages}
+\usepackage{ulem}
+\usepackage{dirtytalk}
+\usepackage{minted}
+\usepackage{textcomp}
+\usepackage{mwe}
+
+\usemintedstyle{emacs}
+\setminted{fontsize=\footnotesize,python3=true}
+\definecolor{bg}{rgb}{0.97,0.97,0.95}
+\setmintedinline{bgcolor=bg}
+\setminted{bgcolor=bg}
+
+%\graphicspath{} % to set the path of figures
+
+\usetikzlibrary{shapes.multipart,positioning,matrix,external,shadows}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\renewcommand{\thempfootnote}{\fnsymbol{mpfootnote}}
+
+%\setbeameroption{show notes on second screen=bottom}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fill in the following information: AUTHOR, TITLE, DATE
+
+\author[Saska Dönges]{Saska Dönges}
+\title[C++ Wut]{C++ basics}
+\subtitle{}
+\date{March 23. 2023, BSCS2011}%{\today}
+\institute{Dept.\ of Computer science, University of Helsinki
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% set beamer colors
+
+\definecolor{hyblue}{RGB}{0,155,255}
+\setbeamercolor{alerted text}{fg=hyblue}
+\setbeamercolor{structure}{fg=hyblue}
+
+\setbeamertemplate{itemize item}{\color{hyblue}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% set font (helvetica plays the role of Arial)
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% set frametitle
+
+\setbeamercolor{frametitle}{fg=black}%{fg=hyblue}
+\setbeamerfont{frametitle}{series=\bfseries, shape=\scshape, size=\huge}
+\setbeamertemplate{frametitle}[default][left,leftskip=3.5cm] % left shift of frame title
+\addtobeamertemplate{frametitle}{\vspace{0.5cm}}{\vspace{1cm}} % spacing above and below frame title
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% set footline and headline
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{headline}{ }
+\setbeamertemplate{footline}{%
+	 \usebeamercolor[fg]{page number in head/foot}%
+	 \usebeamerfont{page number in head/foot}%
+	\hspace{0.5cm}	
+	\includegraphics[width=2.5cm]{HY__LC05_txt__L_3L_B3____BW_cropped}
+	\hfill
+	\insertshorttitle\ /\ \insertshortauthor	\hfill
+	\insertdate	\hspace{0.5cm}
+	\insertframenumber\,/\,\inserttotalframenumber \hspace{0.5cm} \vskip2pt%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Other style settings
+\useinnertheme{circles}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% For video
+\usepackage{media9}%
+\newcommand{\includemovie}[3]{%
+\includemedia[%
+width=#1,height=#2,%
+activate=onclick,%
+deactivate=pageclose,%
+addresource=#3,%
+flashvars={%
+src=#3 % same path as in addresource!
+%&autoPlay=true % default: false; if =true, automatically starts playback after activation (see option ‘activation)’
+&loop=true % if loop=true, media is played in a loop
+&controlBarAutoHideTimeout=0 %  time span before auto-hide
+}%
+]{}{StrobeMediaPlayback.swf}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%% Title slide with HY picture
+%{
+%\usebackgroundtemplate{
+%\setlength{\unitlength}{1cm}
+%\begin{picture}(16,9)
+%\transparent{0.33}
+%\put(0.3,0.8){\includegraphics[width=15cm,height=7.8cm]{hy_brand_image_1_wide_background_hires_logo} }
+%\end{picture}
+%}
+%\setbeamertemplate{headline}{ }%
+%\begin{frame}{}
+%\vspace{2.5cm}
+%\begin{center}
+%\huge
+%{\bf \inserttitle } \\
+%{\large \insertauthor}
+%\end{center}
+%\end{frame}
+%}
+
+
+
+% Title page without picture
+{
+\usebackgroundtemplate{
+\setlength{\unitlength}{1cm}
+\begin{picture}(16,9)
+	\put(-0.1,5){ \includegraphics[width=4cm]{HY__LA01_Flame_____B3____BW} }
+\end{picture}
+\setlength{\unitlength}{1pt}
+}
+\setbeamertemplate{headline}{ }%
+\begin{frame}[noframenumbering]{}
+\vspace{2.5cm}
+\begin{center}
+\huge
+\textcolor{hyblue}{ \bf
+\inserttitle
+} \\
+{\large
+\insertauthor}
+\end{center}
+\end{frame}
+}
+%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Main text
+
+%% set HY Logo on the upper-left corner:
+\usebackgroundtemplate{
+\setlength{\unitlength}{1cm}
+\begin{picture}(16,2.5)
+\put(0.1,0){
+\includegraphics[width=2.5cm]{HY__LA01_Flame_____B3____BW}\hfill
+}
+\end{picture}
+\setlength{\unitlength}{1pt}
+}
+%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Modify text below
+
+\begin{frame}{Agenda}
+\setlength\parskip{\fill}
+\tableofcontents
+\alert{Interrupt} to comment or ask questions! You can get \alert{points}!
+\end{frame}
+
+\section{On a high level}
+\begin{frame}{What is C++}
+\setlength\parskip\fill
+C++ is a programming language created in 1979, as an extension to C.
+
+\pause
+\only<2>{C++ is a procedural, imperative, functional, object-oriented, generic, modular programming language with support for metaprogramming.}
+
+\pause
+\sout{C++ is a procedural, imperative, functional, object-oriented, generic, modular programming language with support for metaprogramming.}
+
+\only<3>{C++ is a federation of multiple concepts. C, C with classes, Template C++ and, STL... Among others.}
+
+\pause
+\sout{C++ is a procedural, object-oriented, functional, generic programming language with support for metaprogramming.}
+
+C++ is a cluster****. 20 different languages in a trenchcoat pretending to be one well-adjusted language.
+
+\pause
+And probably the most used systems programming language in the world today.
+\end{frame}
+
+\begin{frame}{The (main) parts (you should care about)}
+\setlength\parskip\fill
+Any valid C code is valid C++ code.
+
+C with classes. Instead of just structs in C, we actually have classes with member functions. YAY.
+
+C++ templating. Compile-time generics. Introduces the idea of doing computation at compile time. 
+And the neat but mindboggling art of template metaprogramming. Don't ask me about template metaprogramming.
+
+STL (standard template library). A full complement of \sout{fast} not too slow data structures and algorithms provided 
+as standard.
+\end{frame}
+
+\section{Hello world!}
+\begin{frame}[fragile]{Hello world!}
+\begin{minted}{cpp}
+#include <stdio.h>
+#include <iostream>
+
+int main(int argc, char const *argv[]) {
+    std::string hello = "Hello, world!\n";
+    puts("Hello, world!");
+    std::fputs(hello.c_str(), stdout);
+    printf(hello.c_str());
+    std::cout << hello << std::flush;
+    std::cout.write(hello.c_str(), hello.size());
+    return 0;
+}
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Hello world!}
+Or simply
+
+\begin{minted}{cpp}
+#include <iostream>
+
+int main() {
+    std::cout << "Hello, world!" << std::endl;
+}
+\end{minted}
+
+Why don't we even get a warning for not returning enything?
+\end{frame}
+
+\begin{frame}[fragile]{Hello world!}
+The main arguments are possibly familiar
+
+\begin{minted}{cpp}
+int main(int argc, char const *argv[]) {
+	std::cout << "Hello, " << argv[1] << "!" << std::endl;
+}
+\end{minted}
+
+\begin{minted}{shell}
+~/scratch$ ./hello Exactum
+Hello, Exactum!
+~/scratch& ./hello
+\end{minted}
+\pause\vspace{-1.2cm}
+\begin{minted}{shell}
+Hello, ~/scratch$
+\end{minted}
+
+Or \texttt{Segmentation fault}, depending on stuff and things.
+\end{frame}
+
+\section{Undefined behaviour}
+\begin{frame}[fragile]{Array index out of bounds}
+\begin{minted}{cpp}
+int main(int argc, char const *argv[]) {
+    int bla[10];
+    for (int i = 0; i < 100; i++) {
+        std::cout << bla[i]-- << " " << std::flush;
+    }
+}
+\end{minted}
+
+\pause\begin{minted}{shell}
+-1226429632 32689 0 0 -872412576 21939 -872413072 
+21939 82839072 32765 -2017372928 2006707886 -872412576 
+21939  ... 43551 32765 82843582 32765 82843595 
+32765 *** stack smashing detected ***: <unknown> terminated
+Aborted
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Array index out of bounds}
+\begin{minted}{cpp}
+int main(int argc, char const *argv[]) {
+    int* bla = new int[10]();
+    for (int i = 0; i < 100; i++) {
+        std::cout << ++bla[i] << " " << std::flush;
+    }
+}
+\end{minted}
+
+\pause\begin{minted}{shell}
+1 1 1 1 1 1 1 1 1 1 1042 1 842276914 825833016 8247 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 ... 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+\end{minted}
+
+Or \texttt{Segmentation fault} if the OS feels like it.
+\end{frame}
+
+\begin{frame}{Array index out of bounds}
+\setlength\parskip{\fill}
+Don't assume any bounds checking is done in C++. 
+
+\texttt{stl} containers typically do bounds checking for \texttt{at} 
+functions but not for angle bracket access. \mintinline{cpp}{std::vector.at()} is safer but slower.
+
+What happens when you attempt to access memory outside of where you should is undefined.
+
+If the memory is "owned" by you, and you are not smashing the stack the program will not crash even
+if everything is completely broken.
+
+If you attempt to access memory you are not allowed to, the OS will segfault the program.
+\end{frame}
+
+\begin{frame}[fragile]{Valgrind to the rescue}
+
+For the second version:
+
+\begin{minted}{shell}
+~/scratch$ valgrind ./hello
+==2799== Command: ./hello
+==2799==
+1 1 1 1 1 1 1 1 1 1 ==2799== Invalid read of size 4
+==2799==    at 0x10898F: main (in /home/saskeli/scratch/hello)
+\end{minted}
+
+Valgrind may not detect stack smashing.
+\end{frame}
+
+\begin{frame}[fragile]{More undefined behaviour}
+\setlength\parskip{2pt}
+Undefined behaviour is any time something happens for which the C++ standard has a correct behaviour.
+
+A typical example is reading memory that is not allocated to the process. Reading and writing may or 
+may not work as expected, and the process may or may not mangle itself or get killed by the OS.
+
+Most of the time undefined behaviour encountered in the wild is due to memory errors. 
+
+Another trap for new player is the bit shift where 
+
+\vspace{-0.3cm}\begin{minted}{cpp}
+uint32_t x = 1;
+x = x << n;
+\end{minted}
+
+\vspace{-0.5cm}for any $n \geq 32$ is undefined behaviour.
+\end{frame}
+
+\section{Memory management}
+\begin{frame}[fragile]{Memory management}
+Recall
+
+\begin{minted}[highlightlines={3}]{cpp}
+int main(int argc, char const *argv[]) {
+    int* bla = new int[10]();
+    for (int i = 0; i < 10; i++) {
+        std::cout << ++bla[i] << " " << std::flush;
+    }
+}
+\end{minted}
+
+but now fixed
+\end{frame}
+
+\begin{frame}[fragile]{Memory management}
+\vspace{-0.5cm}
+\begin{minted}[highlightlines={5,9}]{shell}
+==2863== Command: ./hello
+==2863==
+1 1 1 1 1 1 1 1 1 1 ==2863==
+==2863== HEAP SUMMARY:
+==2863==     in use at exit: 40 bytes in 1 blocks
+==2863==   total heap usage: 3 allocs, 2 frees, 73,768 bytes allocated
+==2863==
+==2863== LEAK SUMMARY:
+==2863==    definitely lost: 40 bytes in 1 blocks
+==2863==    indirectly lost: 0 bytes in 0 blocks
+==2863==      possibly lost: 0 bytes in 0 blocks
+==2863==    still reachable: 0 bytes in 0 blocks
+==2863==         suppressed: 0 bytes in 0 blocks
+==2863== Rerun with --leak-check=full to see details of leaked memory
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Memory management}
+Not really important here, since program termination \linebreak
+will free up to leaked memory but...
+
+\begin{minted}[highlightlines={6}]{cpp}
+int main(int argc, char const *argv[]) {
+    int* bla = new int[10]();
+    for (int i = 0; i < 10; i++) {
+        std::cout << ++bla[i] << " " << std::flush;
+    }
+    delete(bla);
+}
+\end{minted}
+
+Every \texttt{new} should have a matching \texttt{delete}, \linebreak
+and every \texttt{malloc}/\texttt{calloc} a matching \texttt{free}.
+\end{frame}
+
+\begin{frame}[fragile]{Memory leaks}
+Especially important when you have classes that allocate memory internally. For example, we could 
+have a neat dynamic array that keeps track of the sum of contained values:
+
+\begin{minted}{cpp}
+template<class dtype>
+class SumVector {
+   private:
+    uint64_t capacity;
+    uint64_t size;
+    uint64_t sum;
+    dtype* data;
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Memory leaks (interlude)}
+Actually you'd do the following unless you have a very good reason not to.
+
+\begin{minted}{cpp}
+template<class dtype>
+class SumVector {
+   private:
+    uint64_t sum;
+    std::vector<dtype> data;
+\end{minted}
+
+And after this the compiler can probably take care of all memory management automatically.
+\end{frame}
+
+\begin{frame}{Memory leaks}
+\setlength\parskip\fill
+It's common for objects to be (de)allocated ``under the hood'' when doing assignments and passing objects around.
+
+Any time this happens, there is a risk deallocation of an object with reference members leaves orphaned memory 
+that is \alert{permanently lost} and only deallocated when the process exits.
+
+This leads us conveniently to the next part
+\end{frame}
+
+\section{Copy and move semantics}
+\begin{frame}[fragile]{Copy and move semantics (soon)}
+When is memmory allocated\footnote{Perhaps not actually, but for practical purposes} for member variables and storage for \texttt{vec}?
+
+\begin{minted}{cpp}
+int something_with_a_vector(T& param) {
+    /* loads of omitted code here */
+    std::vector<int> vec;
+    /* loads of code using vec here */
+    return x;
+}
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Copy and move semantics (soon)}
+Memory for local variables is reserved on stack as part of the memory footprint of the function. 
+This includes the local member variables of the vector.
+
+\begin{minted}{cpp}
+int something_with_a_vector(T& param) {
+    /* loads of omitted code here */
+    std::vector<int> vec; // Storage space allocated here (or earlier)
+    /* loads of code using vec here */
+    return x;
+} //Storage space is actually (typically) deallocated here.
+\end{minted}
+
+Mhen vec goes out of scope the member variables will be outside the stack 
+but the data will still be there. \alert{VERY DANGEROUS!}
+\end{frame}
+
+\begin{frame}[fragile]{Copies}
+Any time you assign a value to a new variable or pass by value to a function, a copy will be made.
+
+\begin{minted}{cpp}
+T thing; // Some heavy object
+T other = thing // Copy of thing
+
+void some_function(T thing) // Will create a copy of what is passed in.
+\end{minted}
+
+This can be potentially costly and dangerous.
+\end{frame}
+
+\begin{frame}[fragile]{Copies}
+\setlength\parskip\fill
+Any time a copy of a class \texttt{T} is created, the copy constructor 
+\mintinline{cpp}{T(const T& other)} will be called.
+
+If you have not created one or forbidden the creation of one \alert{one will be provided by the comipiler}.
+
+The default copy constructor \alert{only copies members} naively.
+\end{frame}
+
+\begin{frame}[fragile]{Copies}
+So for our neat \texttt{SumVector}:
+
+\begin{minted}{cpp}
+int main() {
+    SumVector first;
+    first.push_back(1).push_back(2).push_back(3);
+    SumVector second = first;
+    second.pop().push_back(66).push_back(102);
+    first.print();
+    second.print();
+}
+\end{minted}
+
+What happens?
+\end{frame}
+
+\begin{frame}[fragile]{Broken copies}
+\begin{minted}{shell}
+~/scratch$ ./hello
+Size = 3
+Sum = 6
+1 2 66
+Size = 4
+Sum = 171
+1 2 66 102
+free(): double free detected in tcache 2
+Aborted
+~/scratch$
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Fixed copies}
+To make copies work correctly we need to manually deal with the allocated \texttt{data}.
+
+\begin{minted}{cpp}
+SumVector(const SumVector& other)
+    : capacity(other.capacity), size(other.size), sum(other.sum) {
+    data = (int*)malloc(capacity * sizeof(int));
+    std::memcpy(data, other.data, size * sizeof(int));
+}
+\end{minted}
+
+Or better yet \mintinline{cpp}{SumVector(const SumVector&) = delet;}, so the compiler stops any copying.
+\end{frame}
+
+%{
+%\usebackgroundtemplate{
+%\transparent{0.3} % requires \usepackage{transparent} & compile twice
+%\setlength{\unitlength}{1cm}
+%\begin{picture}(16,9)
+%\put(0.2,1){
+%\includegraphics[width=15cm,height=7.5cm]{hy_brand_image_1_wide_background_hires_logo}
+%}
+%\end{picture}
+%\setlength{\unitlength}{1pt}
+%}
+%
+%\begin{frame}{\vspace{3cm}That's it}
+%\begin{center}
+%\vspace{-4cm}{\huge Questions?}
+%\end{center}
+%\end{frame}
+%}
+
+\end{document}
