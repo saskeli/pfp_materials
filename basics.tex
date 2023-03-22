@@ -184,7 +184,7 @@ src=#3 % same path as in addresource!
 \begin{frame}{Agenda}
 \setlength\parskip{\fill}
 \tableofcontents
-\alert{Interrupt} to comment or ask questions! You can get \alert{points}!
+\alert{Interrupt} to comment or ask questions! You will get \alert{points}!
 \end{frame}
 
 \section{On a high level}
@@ -209,7 +209,7 @@ C++ is a cluster****. 20 different languages in a trenchcoat pretending to be on
 And probably the most used systems programming language in the world today.
 \end{frame}
 
-\begin{frame}{The (main) parts (you should care about)}
+\begin{frame}{The (main) parts \linebreak(you should care about)}
 \setlength\parskip\fill
 Any valid C code is valid C++ code.
 
@@ -553,7 +553,73 @@ SumVector(const SumVector& other)
 }
 \end{minted}
 
-Or better yet \mintinline{cpp}{SumVector(const SumVector&) = delet;}, so the compiler stops any copying.
+Or better yet \mintinline{cpp}{SumVector(const SumVector&) = delete;}, so the compiler stops any copying.
+\end{frame}
+
+\begin{frame}[fragile]{Move}
+Move implemented by the \mintinline{cpp}{T(T&& other)} constructor, is usually not that problematic.
+
+Semantically, gets called when something is passed by value but the original thing can be discarded.
+
+\begin{minted}{cpp}
+std::move(something) // triggers move constructor
+
+func(object()) // Passing a newly constructed object to a function.
+
+T maker() {
+    T new_t_thing();
+    return new_t_thing;
+} // The newly created T object is returned using a move constructor.
+\end{minted}
+
+For the discarded object, a \alert{destructor is called}.
+\end{frame}
+
+\begin{frame}[fragile]{Move problems}
+\setlength\parskip\fill
+For our \texttt{SumVector}, unless we manually implement a move constructor, we run into issues with move.
+
+After the object is moved, the destructor is called (and if we are not careful) the data storage will be deallocated.
+
+To fix this, just make sure that the object that we moved from, won't be able to deallocate the data:
+
+\begin{minted}{cpp}
+SumVector(SumVector&& other)
+    : capacity(other.capacity), size(other.size), sum(other.sum) {
+    data = std::exchange(other.data, nullptr);
+}
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{To move or not to move}
+\setlength{\parskip}{\fill}
+Moving objects can also be disallowed by deleting the move constructor. (\mintinline{cpp}{T(T&&) = delete}.)
+
+But you may want to keep it if you want to pass the object around or store them in STL containers. 
+\mintinline{cpp}{std::vector} for example uses \mintinline{cpp}{std::move} when reallocating internal storage.
+
+Generally try to prefer move over copy, and don't do either if you can avoid it.
+\end{frame}
+
+\section{A bit about CMake}
+\begin{frame}{What is CMake}
+\setlength{\parskip}{\fill}
+CMake is the most used build management tool for C++ projects.
+
+I don't like it because the documentation is... bad, and I hadn't found any good tutorials.
+
+Worth knowing about since you \alert{will} run into it if you keep working with C++.
+
+Apparently \url{https://cliutils.gitlab.io/modern-cmake/} is a good tutorial. But I haven't had a chance to check it out.
+\end{frame}
+
+\begin{frame}{Why don't we use CMake on the course}
+\setlength{\parskip}{\fill}
+Make forces us to know more about what is happening.
+
+CSES does not support CMake
+
+I don't know how to use CMake well enough to even attempt teaching anyone else.
 \end{frame}
 
 %{

@@ -2,6 +2,7 @@
 
 #include <cstring>
 #include <iostream>
+#include <utility>
 
 class SumVector {
    private:
@@ -25,6 +26,11 @@ class SumVector {
         : capacity(other.capacity), size(other.size), sum(other.sum) {
         data = (int*)malloc(capacity * sizeof(int));
         std::memcpy(data, other.data, size * sizeof(int));
+    }
+
+    SumVector(SumVector&& other)
+        : capacity(other.capacity), size(other.size), sum(other.sum) {
+        data = std::exchange(other.data, nullptr);
     }
 
     SumVector& push_back(int v) {
