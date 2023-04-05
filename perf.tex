@@ -203,7 +203,8 @@ src=#3 % same path as in addresource!
 Why is this something you should know as a systems programmer?
 
 \pause
-Because all (single thread) computation ``behaves'' like this. (Unless there are hardware bugs\footnote<2->{\url{https://en.wikipedia.org/wiki/Spectre_(security_vulnerability)}})
+Because all (single thread) computation ``behaves'' like this. (Unless there are hardware bugs
+\footnote<2->{\url{https://en.wikipedia.org/wiki/Spectre_(security_vulnerability)}})
 \end{frame}
 
 \begin{frame}{Fetch--Decode--Execute -loop}
@@ -224,6 +225,7 @@ Because \alert{no} modern systems \alert{actually} work like this.
 \end{frame}
 
 \begin{frame}{Why the instruction loop is a lie}
+\pause
 \begin{itemize}
 \item \alert{Out-of-order execution} \url{https://en.wikipedia.org/wiki/Out-of-order_execution}
 \item \alert{Pipelining} \url{https://en.wikipedia.org/wiki/Instruction_pipelining}
@@ -236,6 +238,17 @@ Because \alert{no} modern systems \alert{actually} work like this.
 \end{frame}
 
 \section{Memory hierarchy}
+\begin{frame}{Memory hierarchy}
+\setlength{\parskip}{\fill}
+What is it?
+
+What are the parts?
+
+How fast are the parts?
+
+Why should \alert{you} care?
+\end{frame}
+
 \begin{frame}{Teemu's Cheesecake\footnote{\url{https://www.cs.helsinki.fi/u/kerola/tikra/s2001/luennot/ch4.3_p2.pdf}}
 \footnote{\url{https://en.wikipedia.org/wiki/Memory_hierarchy}}}
 Relative speed differences within the memory hierarchy, compared to the differences in speed of adding the cheese to you mixing bowl when making cheesecake.
@@ -250,7 +263,7 @@ Relative speed differences within the memory hierarchy, compared to the differen
 
 \begin{frame}{Teemu's Cheesecake}
 \begin{description}[leftmargin=*]
-\item{\alert{Data in RAM: }} You forgot to buy cheese $\Leftrightarrow$ Put stuff away and continue when you get pack from the store.
+\item{\alert{Data in RAM: }} You forgot to buy cheese $\Leftrightarrow$ Put stuff away and continue when you get back from the store.
 \item{\alert{Data on SSD: }} Global supply chain shortage $\Leftrightarrow$ Cheese will be available in some days.
 \item{\alert{Data on Spinning disk: }} Cheese on the ISS $\Leftrightarrow$ Talk to NASA, perhaps available in some months.
 \item{\alert{Access requires human intervention: }} Cheese on the moon $\Leftrightarrow$ No planned missions, technically possible in a couple of years.
@@ -377,7 +390,7 @@ Luckily, a lot of tree structures can be made more blocky, and thus more memory 
 \setlength\parskip\fill
 Are they amazing?
 
-Are they a 0-cost abstration?
+Are they a 0-cost abstration\footnote{\url{https://youtu.be/rHIkrotSwcc}}?
 
 Should you do everything you possibly can with templates?
 \end{frame}
@@ -395,6 +408,20 @@ So the main benefit is less issues with branch missprediction? Right?
 Not really. Well written code will have very few unavoidable branch misspredictions anyway. 
 
 But templating can improve the working of the instruction cache massively, which is often a more important thing, than a simple missed branch.
+\end{frame}
+
+\section{How to know what to do}
+\begin{frame}{How should I know what is or isn't fast in practice?}
+\setlength{\parskip}{\fill}
+\pause
+\alert{Figure it out!}
+\begin{itemize}
+\item Look it up online.
+\item See what compiler produces.
+\item Run profiling (cachegrind, grpof...).
+\item Run actual michrobenchmarks.
+\item Remain skeptical of everything. 
+\end{itemize}
 \end{frame}
 
 %{
