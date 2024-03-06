@@ -49,7 +49,7 @@
 \author[Saska Dönges]{Saska Dönges}
 \title[C++ Wut]{C++ basics}
 \subtitle{}
-\date{March 23. 2023, BSCS2011}%{\today}
+\date{March 19. 2024, BSCS2011}%{\today}
 \institute{Dept.\ of Computer science, University of Helsinki
 }
 
@@ -181,13 +181,20 @@ src=#3 % same path as in addresource!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Modify text below
 
+\begin{frame}{After this lecture you should...}
+\begin{itemize}
+    \item know what undefined behaviour and memory errors are
+    \item be able to start working with C++
+\end{itemize} 
+\end{frame}
+
 \begin{frame}{Agenda}
 \setlength\parskip{\fill}
 \tableofcontents
 \alert{Interrupt} to comment or ask questions! You will get \alert{points}!
 \end{frame}
 
-\section{On a high level}
+\section{High level overview (What even is C++)}
 \begin{frame}{What is C++}
 \setlength\parskip\fill
 C++ is a programming language created in 1979, as an extension to C.
@@ -211,7 +218,7 @@ And probably the most used systems programming language in the world today.
 
 \begin{frame}{The (main) parts \linebreak(you should care about)}
 \setlength\parskip\fill
-Any valid C code is valid C++ code.
+Any valid C code is valid C++ code. (\alert{ish})
 
 C with classes. Instead of just structs in C, we actually have classes with member functions. YAY.
 
@@ -346,14 +353,14 @@ Valgrind may not detect stack smashing.
 
 \begin{frame}[fragile]{More undefined behaviour}
 \setlength\parskip{2pt}
-Undefined behaviour is any time something happens for which the C++ standard has a correct behaviour.
+Undefined behaviour is any time something happens for which the C++ standard doesn't define a correct behaviour.
 
-A typical example is reading memory that is not allocated to the process. Reading and writing may or 
+A typical example is reading memory that is not initialized. Reading and writing may or 
 may not work as expected, and the process may or may not mangle itself or get killed by the OS.
 
 Most of the time undefined behaviour encountered in the wild is due to memory errors. 
 
-Another trap for new player is the bit shift where 
+Another trap for new players is bit shifting: 
 
 \vspace{-0.3cm}\begin{minted}{cpp}
 uint32_t x = 1;
@@ -458,7 +465,7 @@ This leads us conveniently to the next part
 
 \section{Copy and move semantics}
 \begin{frame}[fragile]{Copy and move semantics (soon)}
-When is memmory allocated\footnote{Perhaps not actually, but for practical purposes} for member variables and storage for \texttt{vec}?
+When is memory allocated\footnote{Perhaps not actually, but for practical purposes} for member variables and storage for \texttt{vec}?
 
 \begin{minted}{cpp}
 int something_with_a_vector(T& param) {
@@ -488,7 +495,7 @@ but the data will still be there. \alert{VERY DANGEROUS!}
 \end{frame}
 
 \begin{frame}[fragile]{Copies}
-Any time you assign a value to a new variable or pass by value to a function, a copy will be made.
+Any time you assign a value to a new variable or pass by value to a function, a copy will be made.\footnote{Or may not actually be... depending on compiler...}
 
 \begin{minted}{cpp}
 T thing; // Some heavy object
@@ -505,7 +512,7 @@ This can be potentially costly and dangerous.
 Any time a copy of a class \texttt{T} is created, the copy constructor 
 \mintinline{cpp}{T(const T& other)} will be called.
 
-If you have not created one or forbidden the creation of one \alert{one will be provided by the comipiler}.
+If you have not created one and not forbidden the creation of one \alert{one will be provided by the comipiler}.
 
 The default copy constructor \alert{only copies members} naively.
 \end{frame}
@@ -595,7 +602,7 @@ SumVector(SumVector&& other)
 \setlength{\parskip}{\fill}
 Moving objects can also be disallowed by deleting the move constructor. (\mintinline{cpp}{T(T&&) = delete}.)
 
-But you may want to keep it if you want to pass the object around or store them in STL containers. 
+But you may want to keep it if you want to pass the objects around or store them in STL containers. 
 \mintinline{cpp}{std::vector} for example uses \mintinline{cpp}{std::move} when reallocating internal storage.
 
 Generally try to prefer move over copy, and don't do either if you can avoid it.

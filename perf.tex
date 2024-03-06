@@ -50,7 +50,7 @@
 \author[Saska Dönges]{Saska Dönges}
 \title[C++ performance]{Performance considerations}
 \subtitle{}
-\date{March 30. 2023, BSCS2011}%{\today}
+\date{March 26. 2024, BSCS2011}%{\today}
 \institute{Dept.\ of Computer science, University of Helsinki
 }
 
@@ -182,6 +182,10 @@ src=#3 % same path as in addresource!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Modify text below
 
+\begin{frame}{After this lecture you should...}
+have some idea about what goes into practical performance
+\end{frame}
+
 \begin{frame}{Agenda}
 \setlength\parskip{\fill}
 \tableofcontents
@@ -218,7 +222,7 @@ Because all (single thread) computation ``behaves'' like this. (Unless there are
 \draw[->, line width=2] (Execute) edge[bend right=25] (Fetch);
 \end{tikzpicture}
 
-Why is not something you should concern yourself with?
+Why is this not something you should concern yourself with?
 
 \pause
 Because \alert{no} modern systems \alert{actually} work like this.
