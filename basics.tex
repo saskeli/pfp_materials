@@ -48,8 +48,8 @@
 
 \author[Saska Dönges]{Saska Dönges}
 \title[C++ Wut]{C++ basics}
-\subtitle{}
-\date{March 19. 2024, BSCS2011}%{\today}
+\subtitle{Or ``what I wish someone told me 10 years ago''}
+\date{March 18. 2025, BSCS2011}%{\today}
 \institute{Dept.\ of Computer science, University of Helsinki
 }
 
@@ -156,7 +156,9 @@ src=#3 % same path as in addresource!
 \textcolor{hyblue}{ \bf
 \inserttitle
 } \\
+
 {\large
+{\bf\color{gray}\insertsubtitle} \\
 \insertauthor}
 \end{center}
 \end{frame}
@@ -275,6 +277,7 @@ int main(int argc, char const *argv[]) {
 Hello, Exactum!
 ~/scratch& ./hello
 \end{minted}
+\only<1>{\alert{What happens without the parameter?}}
 \pause\vspace{-1.2cm}
 \begin{minted}{shell}
 Hello, ~/scratch$
@@ -294,6 +297,11 @@ int main(int argc, char const *argv[]) {
 }
 \end{minted}
 
+\only<1>{\alert{What is the code doing?
+    
+What happens when we compile and run?
+
+Bugs?}}
 \pause\begin{minted}{shell}
 -1226429632 32689 0 0 -872412576 21939 -872413072 
 21939 82839072 32765 -2017372928 2006707886 -872412576 
@@ -312,7 +320,11 @@ int main(int argc, char const *argv[]) {
     }
 }
 \end{minted}
+\only<1>{\alert{What about now?
 
+What changed?
+
+What will happen?}}
 \pause\begin{minted}{shell}
 1 1 1 1 1 1 1 1 1 1 1042 1 842276914 825833016 8247 1 1 1 1 1 
 1 1 1 1 1 1 1 1 1 1 1 ... 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
@@ -383,7 +395,9 @@ int main(int argc, char const *argv[]) {
 }
 \end{minted}
 
-but now fixed
+But now fixed
+
+\alert{Or is it?}
 \end{frame}
 
 \begin{frame}[fragile]{Memory management}
@@ -482,11 +496,11 @@ Memory for local variables is reserved on stack as part of the memory footprint 
 This includes the local member variables of the vector.
 
 \begin{minted}{cpp}
-int something_with_a_vector(T& param) {
+std::vector<int>* something_with_a_vector(T& param) {
     /* loads of omitted code here */
     std::vector<int> vec; // Storage space allocated here (or earlier)
     /* loads of code using vec here */
-    return x;
+    return &vec;
 } //Storage space is actually (typically) deallocated here.
 \end{minted}
 
@@ -522,16 +536,16 @@ So for our neat \texttt{SumVector}:
 
 \begin{minted}{cpp}
 int main() {
-    SumVector first;
+    SumVector<int> first;
     first.push_back(1).push_back(2).push_back(3);
-    SumVector second = first;
+    SumVector<int> second = first;
     second.pop().push_back(66).push_back(102);
     first.print();
     second.print();
 }
 \end{minted}
 
-What happens?
+\alert{What happens?}
 \end{frame}
 
 \begin{frame}[fragile]{Broken copies}
@@ -555,8 +569,8 @@ To make copies work correctly we need to manually deal with the allocated \textt
 \begin{minted}{cpp}
 SumVector(const SumVector& other)
     : capacity(other.capacity), size(other.size), sum(other.sum) {
-    data = (int*)malloc(capacity * sizeof(int));
-    std::memcpy(data, other.data, size * sizeof(int));
+    data = (dtype*)malloc(capacity * sizeof(dtype));
+    std::memcpy(data, other.data, size * sizeof(dtype));
 }
 \end{minted}
 
@@ -615,9 +629,10 @@ CMake is the most used build management tool for C++ projects.
 
 I don't like it because the documentation is... bad, and I hadn't found any good tutorials.
 
-Worth knowing about since you \alert{will} run into it if you keep working with C++.
+Worth knowing about since you \alert{will} run into it if you keep working with C++. 
+Especially if you want to be compatible with multiple platforms (Windows).
 
-Apparently \url{https://cliutils.gitlab.io/modern-cmake/} is a good tutorial. But I haven't had a chance to check it out.
+Apparently \url{https://cliutils.gitlab.io/modern-cmake/} is a good tutorial.
 \end{frame}
 
 \begin{frame}{Why don't we use CMake on the course}
@@ -626,7 +641,7 @@ Make forces us to know more about what is happening.
 
 CSES does not support CMake
 
-I don't know how to use CMake well enough to even attempt teaching anyone else.
+I don't know how to use CMake well enough to teach it.
 \end{frame}
 
 %{
